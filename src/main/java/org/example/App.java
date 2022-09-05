@@ -26,9 +26,8 @@ public class App
         try {
             session.beginTransaction();
 
-            Person person = new Person("Test cascading", 30);
-            Item item = new Item("Test cascading item", person);
-            person.setItems(new ArrayList<>(Collections.singletonList(item)));
+            Person person = new Person("Person", 30);
+            person.addItem(new Item("Item"));
 
             session.save(person);
 
