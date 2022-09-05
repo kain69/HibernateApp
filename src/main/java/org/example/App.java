@@ -1,10 +1,13 @@
 package org.example;
 
-import org.example.model.Passport;
-import org.example.model.Person;
+import org.example.model.Actor;
+import org.example.model.Movie;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Hello world!
@@ -13,40 +16,38 @@ import org.hibernate.cfg.Configuration;
 public class App 
 {
     public static void main( String[] args ) {
-        Configuration configuration = new Configuration().addAnnotatedClass(Person.class)
-                .addAnnotatedClass(Passport.class);
+        Configuration configuration = new Configuration().addAnnotatedClass(Actor.class)
+                .addAnnotatedClass(Movie.class);
 
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
 
-        try {
+        try(sessionFactory) {
+            Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
-
-//            Person person = new Person("Test Person", 30);
-//            Passport passport = new Passport(12345);
 //
-//            person.setPassport(passport);
+//            Movie movie = new Movie("Pulp fiction", 1994);
+//            Actor actor1 = new Actor("Harvey Keitel", 81);
+//            Actor actor2 = new Actor("Samuel L. Jackson", 72);
 //
-//            session.save(person);
+//            // Arrays.asList()
+//            movie.setActors(new ArrayList<>(List.of(actor1, actor2)));
+//
+//            actor1.setMovies(new ArrayList<>(List.of(movie)));
+//            actor2.setMovies(new ArrayList<>(List.of(movie)));
+//
+//            session.save(movie);
+//            session.save(actor1);
+//            session.save(actor2);
 
-//            Person person = session.get(Person.class, 1);
-//            System.out.println(person.getPassport().getPassportNumber());
+            Movie movie = session.get(Movie.class, 1);
+            System.out.println(movie.getActors());
 
-//            Passport passport = session.get(Passport.class, 1);
-//            System.out.println(passport.getPerson().getName());
+            Actor actor = session.get(Actor.class, 1);
+            System.out.println(actor.getMovies());
 
-            // Persistent
-//            Person person = session.get(Person.class, 1);
-//            person.getPassport().setPassportNumber(77777);
 
-            // Каскадное удаление
-            Person person = session.get(Person.class, 1);
-            session.remove(person);
 
             session.getTransaction().commit();
-        }
-        finally {
-            sessionFactory.close();
         }
     }
 }
